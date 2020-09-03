@@ -28,6 +28,16 @@ void AEvilPawn::BeginPlay()
 void AEvilPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (!TargetRotationOffset.IsIdentity())
+	{
+		UpdateRotation();
+	}
+
+	if (!FMath::IsNearlyZero(TargetMovementOffset.X))
+	{
+		UpdatePosition();
+	}
 }
 
 // Called to bind functionality to input
@@ -41,16 +51,20 @@ void AEvilPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEvilPawn::ProcessForwardInput(float Value)
 {
-	if (!FMath::IsNearlyZero(Value))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("MoveForward input: %f"), Value);
-	}
+	TargetMovementOffset = FVector(Value * GetWorld()->DeltaTimeSeconds * MovementSpeed, 0.0f, 0.0f);
 }
 
 void AEvilPawn::ProcessSteeringInput(float Value)
 {
-	if (!FMath::IsNearlyZero(Value))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("SteerRight input: %f"), Value);
-	}
+	TargetRotationOffset = FQuat(FVector::UpVector, Value * PI * GetWorld()->DeltaTimeSeconds * SteeringSpeed);
+}
+
+void AEvilPawn::UpdatePosition()
+{
+	AddActorLocalOffset(TargetMovementOffset, true);
+}
+
+void AEvilPawn::UpdateRotation()
+{
+	AddActorLocalRotation(TargetRotationOffset, true);
 }

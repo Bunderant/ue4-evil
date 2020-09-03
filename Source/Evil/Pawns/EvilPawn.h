@@ -15,13 +15,23 @@ UCLASS() class EVIL_API AEvilPawn : public APawn
 	GENERATED_BODY()
 
 private:
+	// PROPERTIES
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UCapsuleComponent* CapsuleComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	float MovementSpeed = 100.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
+	float SteeringSpeed = 20.0f;
+	// FUNCTIONS
 	void ProcessForwardInput(float Value);
 	void ProcessSteeringInput(float Value);
+	void UpdatePosition();
+	void UpdateRotation();
+	// VARIABLES
+	FVector TargetMovementOffset;
+	FQuat TargetRotationOffset;
 
 public:
 	// Sets default values for this pawn's properties
