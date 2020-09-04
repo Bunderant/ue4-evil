@@ -24,7 +24,7 @@ void AEvilPawn::BeginPlay()
 	Super::BeginPlay();
 
 	Velocity = FVector::ZeroVector;
-	AngularVelocity = FQuat::Identity;
+	AngularVelocityYaw = 0.0f;
 }
 
 // Called every frame
@@ -32,8 +32,8 @@ void AEvilPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	AngularVelocity = FMath::QInterpTo(AngularVelocity, TargetAngularVelocity, DeltaTime, SteeringAccelerationSpeed);
-	if (!AngularVelocity.IsIdentity())
+	AngularVelocityYaw = FMath::FInterpTo(AngularVelocityYaw, TargetAngularVelocityYaw, DeltaTime, SteeringAccelerationSpeed);
+	if (!FMath::IsNearlyZero(AngularVelocityYaw))
 	{
 		UpdateRotation();
 	}
@@ -56,22 +56,20 @@ void AEvilPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEvilPawn::ProcessForwardInput(float Value)
 {
-	// TODO: Don't scale by delta time until the position change is applied
-	TargetVelocity = FVector(Value * GetWorld()->DeltaTimeSeconds * MovementSpeed, 0.0f, 0.0f);
+	TargetVelocity = FVector(Value * MovementSpeed, 0.0f, 0.0f);
 }
 
 void AEvilPawn::ProcessSteeringInput(float Value)
 {
-	// TODO: Don't scale by delta time until the rotation change is applied
-	TargetAngularVelocity = FQuat(FVector::UpVector, Value * PI * GetWorld()->DeltaTimeSeconds * SteeringSpeed);
+	TargetAngularVelocityYaw = Value * PI * SteeringSpeed;
 }
 
 void AEvilPawn::UpdatePosition()
 {
-	AddActorLocalOffset(Velocity, true);
+	AddActorLocalOffset(Velocity * GetWorld()->DeltaTimeSeconds, true);
 }
 
 void AEvilPawn::UpdateRotation()
 {
-	AddActorLocalRotation(AngularVelocity, true);
+	AddActorLocalRotation(FQuat(GetActorUpVector(), AngularVelocityYaw * GetWorld()->DeltaTimeSeconds), true);
 }

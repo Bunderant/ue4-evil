@@ -37,9 +37,9 @@ private:
 
 	// VARIABLES
 	FVector TargetVelocity;
-	FQuat TargetAngularVelocity;
+	float TargetAngularVelocityYaw;
 	FVector Velocity;
-	FQuat AngularVelocity;
+	float AngularVelocityYaw;
 
 public:
 	// Sets default values for this pawn's properties
