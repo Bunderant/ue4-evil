@@ -8,7 +8,7 @@
 #include "EvilPawn.generated.h"
 
 class UCapsuleComponent;
-class UCameraComponent;
+class UCineCameraComponent;
 
 UCLASS() class EVIL_API AEvilPawn : public APawn
 {
@@ -19,7 +19,7 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UCapsuleComponent* CapsuleComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UCameraComponent* Camera;
+	UCineCameraComponent* Camera;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))
 	float MovementSpeed = 500.0f; // cm/sec
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement", meta = (AllowPrivateAccess = "true"))

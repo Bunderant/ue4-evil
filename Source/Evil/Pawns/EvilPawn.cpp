@@ -4,6 +4,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "CineCameraComponent.h"
 
 // Sets default values
 AEvilPawn::AEvilPawn()
@@ -14,7 +15,7 @@ AEvilPawn::AEvilPawn()
 	CapsuleComponent = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule Collider"));
 	RootComponent = CapsuleComponent;
 
-	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	Camera = CreateDefaultSubobject<UCineCameraComponent>(TEXT("Cinematic Camera"));
 	Camera->SetupAttachment(RootComponent);
 }
 
