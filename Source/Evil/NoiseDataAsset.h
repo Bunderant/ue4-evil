@@ -9,25 +9,26 @@
 class UTexture2D;
 
 /**
- * 
+ *
  */
 UCLASS(BlueprintType)
 class EVIL_API UNoiseDataAsset : public UDataAsset
 {
 	GENERATED_BODY()
-	
-private:
 
+private:
 	/** Noise Texture can be of any size > 0, but must have its compression set to "VectorDisplacementMap". */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Textures", meta = (AllowPrivateAccess = "true"))
 	UTexture2D* NoiseTexture;
 
-public:
+	/** Converts the sampled color to greyscale and maps the result to the given range. */
+	float MapSampleToRange(const FColor& SampledColor, const float Min, const float Max) const;
 
+public:
 	/**
-	 * Samples the noise texture at the given UV coordinates, mapping the sample to the range [-1, 1]. 
-	 * UV coords will wrap if outside the range [0, 1]. 
+	 * Samples the noise texture at the given UV coordinates, mapping the sample to the range [-1, 1].
+	 * UV coords will wrap if outside the range [0, 1].
 	 */
 	UFUNCTION(BlueprintCallable)
-	float TakeSample(float XCoordNormalized, float YCoordNormalized) const;
+	float TakeSample(const float XCoordNormalized, const float YCoordNormalized) const;
 };

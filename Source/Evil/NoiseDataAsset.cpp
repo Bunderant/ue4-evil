@@ -21,9 +21,14 @@ float UNoiseDataAsset::TakeSample(const float XCoordNormalized, const float YCoo
 	// Now that the color has been sampled, we no longer need access to the texture data
 	Mip.BulkData.Unlock();
 
-	return FMath::GetMappedRangeValueClamped(
+	return MapSampleToRange(SampledColor, -1.0f, 1.0f);
+}
+
+float UNoiseDataAsset::MapSampleToRange(const FColor& SampledColor, const float Min, const float Max) const 
+{
+	return FMath::GetMappedRangeValueUnclamped(
 		FVector2D{ 0, 255 },
-		FVector2D{ -1.0f, 1.0f },
+		FVector2D{ Min, Max },
 		(SampledColor.R + SampledColor.G + SampledColor.B) / 3.0f
 	);
 }
